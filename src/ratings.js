@@ -22,25 +22,6 @@ const DonutChart = () => {
 
   const totalSpending = data.reduce((acc, item) => acc + item.amount, 0);
 
-  const slices = [];
-  let cumulativeAngle = -10; // Start from the top (12 o'clock position)
-
-  for (const item of data) {
-    const angle = (item.amount / totalSpending) * 360;
-
-    slices.push({
-      startAngle: cumulativeAngle,
-      endAngle: cumulativeAngle + angle,
-      color: item.color,
-      label: item.label,
-    });
-
-    cumulativeAngle += angle;
-  }
-
-  const middleTextX = 170;
-  const middleTextY = 120;
-
   const legend = data.map((item, index) => (
     <View key={index} style={styles.legendItem}>
       <View style={{ backgroundColor: item.color, ...styles.legendColor }} />
@@ -50,42 +31,45 @@ const DonutChart = () => {
     </View>
   ));
 
+  const totalSpendingText = `$${totalSpending.toFixed(2)}`;
+
   return (
     <View style={styles.chartContainer}>
-      <SvgText
-        x={middleTextX}
-        y={middleTextY - 20}
-        fontSize={12}
-        textAnchor="middle"
-      >
-        Total September Spending
-      </SvgText>
-      <SvgText
-        x={middleTextX}
-        y={middleTextY + 10}
-        fontSize={16}
-        fontWeight="bold"
-        textAnchor="middle"
-      >
-        ${totalSpending.toFixed(2)}
-      </SvgText>
-
       <Svg width="100%" height="240">
-        {slices.map((slice, index) => (
-          <G key={index}>
-            <Circle
-              cx="170"
-              cy="120"
-              r="100"
-              stroke="transparent"
-              strokeWidth="40"
-              fill="none"
-              strokeDasharray={`${slice.endAngle - slice.startAngle}, 360`}
-              strokeDashoffset={slice.startAngle}
-              stroke={slice.color}
-            />
-          </G>
-        ))}
+        {/* Draw the total amount of money text */}
+        <SvgText
+          x="50%"
+          y="50%"
+          fontSize={20}
+          fontWeight="bold"
+          textAnchor="middle"
+          zIndex={1}
+        >
+          {totalSpendingText}
+        </SvgText>
+
+        {data.map((slice, index) => {
+          const percentage = (slice.amount / totalSpending) * 100;
+          const angle = (percentage * 360) / 100;
+          const dashArray = [angle, 360 - angle];
+          const dashOffset = -90; // Offset by 90 degrees to start from the top
+
+          return (
+            <G key={index}>
+              {/* Draw the pie chart slice */}
+              <Circle
+                cx="50%"
+                cy="120"
+                r="80" // Inner radius for the donut chart
+                fill="transparent" // Set fill to transparent to create the donut effect
+                stroke={slice.color}
+                strokeWidth="40" // Adjust strokeWidth for the donut width
+                strokeDasharray={dashArray.join(",")}
+                strokeDashoffset={dashOffset}
+              />
+            </G>
+          );
+        })}
       </Svg>
 
       <View style={styles.legend}>{legend}</View>
@@ -147,7 +131,7 @@ const RatingsScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={{ ...styles.button, marginTop: 10 }} // Adjusted marginTop here
+          style={{ ...styles.button, marginTop: 10 }}
           onPress={() => {
             console.log("Re-evaluate My Score button pressed");
           }}
@@ -207,8 +191,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: -230, // Adjusted marginTop to reduce space
-    marginLeft: 23,
+    marginTop: 10, // Adjusted marginTop to move the chart down
+    marginBottom: 30, // Added marginBottom to create space between chart and buttons
   },
   legend: {
     flexDirection: "row",
