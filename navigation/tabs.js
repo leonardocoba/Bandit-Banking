@@ -29,14 +29,14 @@ const CustomTabBarButton = ({ children, onPress }) => (
       }}
     >
       <FontAwesomeIcon
-        name="pencil"
+        name="map-marker"
         size={40}
         color="#fff"
         style={{
           position: "absolute",
           top: "50%", // Center vertically
           left: "50%", // Center horizontally
-          transform: [{ translateX: -17 }, { translateY: -25 }], // Adjust to center the icon
+          transform: [{ translateX: -11 }, { translateY: -25 }], // Adjust to center the icon
         }}
       />
       <View
@@ -46,7 +46,7 @@ const CustomTabBarButton = ({ children, onPress }) => (
           top: 62,
         }}
       >
-        <Text style={{ color: "white", fontSize: 12 }}>Compose</Text>
+        <Text style={{ color: "white", fontSize: 11 }}>Cash Back</Text>
       </View>
     </View>
     <Text style={{ color: "#fff" }}>{children}</Text>
@@ -84,14 +84,14 @@ const Tabs = () => {
               }}
             >
               <FontAwesomeIcon
-                name="house"
+                name="home"
                 size={30}
-                color={focused ? "#e32f45" : "#748c94"}
+                color={focused ? "#66b3ff" : "#748c94"}
               />
               <Text
-                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 15 }}
+                style={{ color: focused ? "#66b3ff" : "#748c94", fontSize: 15 }}
               >
-                Mail
+                Home
               </Text>
             </View>
           ),
@@ -121,12 +121,12 @@ const Tabs = () => {
               <FontAwesomeIcon
                 name="credit-card"
                 size={30}
-                color={focused ? "#e32f45" : "#748c94"}
+                color={focused ? "#66b3ff" : "#748c94"}
               />
               <Text
-                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 15 }}
+                style={{ color: focused ? "#66b3ff" : "#748c94", fontSize: 15 }}
               >
-                Settings
+                Cards
               </Text>
             </View>
           ),
